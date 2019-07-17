@@ -1,0 +1,40 @@
+init:
+  mydbCredentials: mysql-mydb-root
+  mydbSecrets: ${secrets.$mydbCredentials}
+  dbIP:
+    mysql: 127.0.0.1
+    
+pipeline:
+  services:
+      mysql:
+        action: docker:run
+        image: mysql:5.7
+        name: dbsync
+        ports:
+          3306: 3306
+        env:
+          MYSQL_ROOT_PASSWORD: ${mydbSecrets.Password}
+
+  create:
+    mydb:
+      action: dsunit:init
+      datastore: mydb
+      recreate: true
+      config:
+        driverName: mysql
+        descriptor: '[username]:[password]@tcp(${dbIP.mysql}:3306)/[dbname]?parseTime=true'
+        credentials: $mydbCredentials
+      admin:
+        datastore: mysql
+        ping: true
+        config:
+          driverName: mysql
+          descriptor: '[username]:[password]@tcp(${dbIP.mysql}:3306)/[dbname]?parseTime=true'
+          credentials: $mydbCredentials
+      scripts:
+        - URL: mydb/schema.sql
+
+  load:
+    action: dsunit:prepare
+    datastore: mydb
+    URL: mydb/data
