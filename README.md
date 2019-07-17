@@ -59,13 +59,22 @@ Where
 - **gs-myservice** is google secrets credential file (~/.secret/gcp-myservice.json)  created for your service account
 
 ```bash
-endly backup.yaml -t=task
+endly backup.yaml -t=take
 endly backup.yaml -t=restore
 ```
 
 Output:
 
 ![Backup Output](/images/backup_output.png)
+
+
+Troubleshooting secrets:
+To show expanded password set ENDLY_SECRET_REVEAL=true
+
+```bash
+export ENDLY_SECRET_REVEAL=true
+endly backup.yaml -t=take
+```
 
 Reference: [Endly Secrets](https://github.com/viant/endly/tree/master/doc/secrets)
 
