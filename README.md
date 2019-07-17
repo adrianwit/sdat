@@ -47,7 +47,7 @@ pipeline:
 Where
 
 - root-mydb is credentials file (~/.secret/root-mydb.json) created by  ```endly -c=root-mydb```
-- gs-myservice is google secrets credential file (~/.secret/root-gs-myservice.json)  created for your service account
+- gs-myservice is google secrets credential file (~/.secret/gs-myservice.json)  created for your service account
 
 ```bash
 endly backup.yaml -t=task
