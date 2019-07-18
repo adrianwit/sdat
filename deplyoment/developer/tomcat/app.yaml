@@ -1,0 +1,27 @@
+init:
+ appPath: $Pws()/app
+
+pipeline:
+  setSdk:
+    action: sdk:set
+    sdk: jdk:1.8
+  setMaven:
+    action: deployment:deploy
+    appName: maven
+    version: 3.5
+  deployTomcat:
+    action: deployment:deploy
+    appName: tomcat
+    version: 7.0
+    baseLocation: /tmp/myapp
+  build:
+    action: exec:run
+    commands:
+      - cd $appPath
+      - mvn clean pacakge
+  deploy:
+    action: storage:copy
+    soruce:
+      URL: appPath/target/app.war
+    dest:
+      URL: /tmp/myapp/tomcat/webapp
