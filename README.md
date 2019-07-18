@@ -148,6 +148,68 @@ Output:
 ![Backup Output](/images/node_output.png)
 
 
+##### Java webapp (tomcat)
+
+[app.yaml](deplyoment/developer/tomcat/app.yaml)
+```yaml
+init:
+  appPath: $Pwd()/app
+  tomcatLocation: /tmp/webapp
+  tomcatTarget: $tomcatLocation/tomcat/webapps
+
+pipeline:
+
+  setTarget:
+    action: exec:setTarget
+    URL: ssh://127.0.0.1
+    credentials: dev
+
+  setSdk:
+    action: sdk:set
+    sdk: jdk:1.8
+
+  setMaven:
+    action: deployment:deploy
+    appName: maven
+    version: 3.5
+    baseLocation: /usr/local
+
+  deployTomcat:
+    action: deployment:deploy
+    appName: tomcat
+    version: 7.0
+    baseLocation: $tomcatLocation
+
+  build:
+    action: exec:run
+    checkError: true
+    commands:
+      - cd $appPath
+      - mvn clean package
+  deploy:
+    action: storage:copy
+    source:
+      URL: $appPath/target/my-app-1.0.war
+    dest:
+      URL: $tomcatTarget/app.war
+
+  stop:
+    action: exec:run
+    commands:
+      - ps -ef | grep catalina | grep -v grep
+      - $cmd[0].stdout:/catalina/ ? $tomcatLocation/tomcat/bin/catalina.sh stop
+
+  stop:
+    action: exec:run
+    checkErrors: true
+    commands:
+      - $tomcatLocation/tomcat/bin/catalina.sh start
+      - "echo 'App URL: http://127.0.0.1:8080/app/hello'"
+
+```
+
+![Backup Output](/images/tomcat_output.png)
+
 ### Application State
 
 
