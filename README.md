@@ -15,7 +15,7 @@
     - [Database](#database) 
       
 
-### Security
+## Security
 
 - [backup.yaml](security/backup.yaml)
 ```yaml
@@ -96,11 +96,11 @@ endly backup.yaml -t=take
 Reference: [Endly Secrets](https://github.com/viant/endly/tree/master/doc/secrets)
 
 
-### Build and Deployment
+## Build and Deployment
 
 
 
-#### Docker
+### Docker
 
 
 [app.yaml](deplyoment/docker/go/app.yaml)
@@ -158,9 +158,9 @@ Where:
 Reference: [Endly Docker Service](https://github.com/viant/endly/tree/master/system/docker)
 
 
-#### Developer machine
+### Developer machine
 
-##### React App
+#### React App
 
 [app.yaml](deplyoment/developer/node/app.yaml)
 ```yaml
@@ -223,7 +223,7 @@ Output:
 ![Node Output](/images/node_output.png)
 
 
-##### Java webapp
+#### Java webapp
 
 [app.yaml](deplyoment/developer/tomcat/app.yaml)
 ```yaml
@@ -291,7 +291,7 @@ endly app.yaml
 
 
 
-##### Golang app
+#### Golang app
 
 [app.yaml](deplyoment/developer/go/app.yaml)
 ```yaml
@@ -340,7 +340,7 @@ endly app.yaml
 
 ![Go Output](/images/go_output.png)
 
-#### Hybrid
+### Hybrid
 
 [app.yaml](deplyoment/hybrid/go/app.yaml)
 
@@ -399,9 +399,9 @@ Where:
 
 ![Go Output](/images/hybrid_output.png)
 
-#### Serverless
+### Serverless
 
-##### Cloud functions
+#### Cloud functions
  
 [@app.yaml](deplyoment/serverless/cloud_functions/go/app.yaml) 
 ```yaml
@@ -447,7 +447,7 @@ endly app.yaml
 
 ![Cloud Function Output](/images/cloud_function_output.png)
 
-##### Lambda
+#### Lambda
 
 
 [@app.yaml](deplyoment/serverless/lambda/go/app.yaml) 
@@ -497,9 +497,9 @@ pipeline:
 ```
 ![Go Output](/images/lambda_output.png)
 
-### Application State
+## Application State
 
-#### Database
+### Database
 
 [setup.yaml](state/database/setup.yaml)
 ```yaml
@@ -548,11 +548,11 @@ pipeline:
 Where
 - mysql-mydb-root is mysql credential created by ```endly -c=mysql-mydb-root```
 
-#### Datastore
+### Datastore
 
-#### File Storage
+### File Storage
 
-#### Message Bus
+### Message Bus
 
 
 
