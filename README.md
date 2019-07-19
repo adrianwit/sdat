@@ -2,12 +2,14 @@
 
 - [Security](#security)
 - [Build And Deployment](#build-and-deployment)
+   - [Docker](#docker)
+                
    - [Developer machine](#developer-machine)
      * [React App](#react-app)
      * [Java Tomcat Webapp](#java-webapp)  
      * [Golang app](#golang-app)
-   - [Docker](#docker)
    - [Hybrid](#hybrid)
+   
    - [Serverless](#serverless)
 - [Application State](#application-state)
     - [Database](#database) 
@@ -94,6 +96,65 @@ Reference: [Endly Secrets](https://github.com/viant/endly/tree/master/doc/secret
 
 
 ### Build and Deployment
+
+
+
+#### Docker
+
+
+[app.yaml](deplyoment/docker/go/app.yaml)
+
+```yaml
+init:
+  buildPath: $Pwd()
+
+pipeline:
+  build:
+    action: docker:build
+    path: ${buildPath}
+    nocache: false
+    tag:
+      image: myapp
+      version: '1.0'
+
+  stop:
+    action: docker:stop
+    images:
+      - myapp
+
+  start:
+    action: docker:run
+    name: myapp
+    image: myapp:1.0
+    env:
+      PORT: 8081
+```
+
+```bash
+endly app.yaml
+```
+
+![Docker Output](/images/docker_output.png)
+
+Where: 
+- [Dockerfile](/deplyoment/docker/go/Dockerfile)
+    ```dockerfile
+    # transient image
+    FROM golang:1.12.7-alpine3.10 as build
+    WORKDIR /go/src/app
+    COPY myapp .
+    ENV GO111MODULE on
+    RUN go build -v -o /app
+    # final image
+    FROM alpine:3.10
+    RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
+    COPY --from=build /app /app
+    CMD ["/app"]
+    ```
+
+
+Reference: [Endly Docker Service](https://github.com/viant/endly/tree/master/system/docker)
+
 
 #### Developer machine
 
@@ -274,16 +335,14 @@ endly app.yaml
 
 ![Go Output](/images/go_output.png)
 
-
-#### Docker
-
 #### Hybrid
 
 #### Serverless
 
 
-### Application State
 
+
+### Application State
 
 #### Database
 

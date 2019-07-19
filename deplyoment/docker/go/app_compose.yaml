@@ -1,0 +1,19 @@
+init:
+  buildPath: $Pwd()
+
+pipeline:
+  build:
+    action: docker:build
+    path: ${buildPath}
+    nocache: false
+    tag:
+      image: myapp
+      version: '1.0'
+
+  start:
+    action: exec:run
+    systemPaths:
+      - /usr/local/bin
+    commands:
+      - docker-compose down
+      - docker-compose up -d

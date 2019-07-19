@@ -1,0 +1,23 @@
+init:
+  buildPath: $Pwd()
+
+pipeline:
+  build:
+    action: docker:build
+    path: ${buildPath}
+    nocache: false
+    tag:
+      image: myapp
+      version: '1.0'
+
+  stop:
+    action: docker:stop
+    images:
+      - myapp
+
+  start:
+    action: docker:run
+    name: myapp
+    image: myapp:1.0
+    env:
+      PORT: 8081

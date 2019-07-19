@@ -1,0 +1,8 @@
+version: "3.2"
+services:
+  myapp:
+    container_name: myapp
+    image: myapp:1.0
+    environment:
+      PORT: 8081
+    network_mode: bridge
