@@ -1,0 +1,33 @@
+init:
+  appPath: $Pwd()/myapp
+
+pipeline:
+
+  setTarget:
+    action: exec:setTarget
+    URL: ssh://127.0.0.1
+    credentials: dev
+
+  setSdk:
+    action: sdk:set
+    sdk: go:1.12
+
+  build:
+    action: exec:run
+    checkError: true
+    commands:
+      - cd $appPath
+      - ls *
+      - $cmd[1].stdout:/myapp/? rm myapp
+      - go build -o myapp
+
+  stop:
+    action: process:stop
+    input: myapp
+
+  start:
+    action: process:start
+    directory: $appPath/
+    watch: true
+    immuneToHangups: true
+    command: ./myapp

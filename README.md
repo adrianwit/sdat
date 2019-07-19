@@ -145,7 +145,7 @@ endly app.yaml -m
 
 Output:
 
-![Backup Output](/images/node_output.png)
+![Node Output](/images/node_output.png)
 
 
 ##### Java webapp (tomcat)
@@ -210,8 +210,51 @@ pipeline:
 ```bash
 endly app.yaml
 ```
+    
+![Tomcat Output](/images/tomcat_output.png)
 
-![Backup Output](/images/tomcat_output.png)
+
+
+##### Golang app
+
+[app.yaml](deplyoment/developer/go/app.yaml)
+```yaml
+init:
+  appPath: $Pwd()/myapp
+
+pipeline:
+
+  setSdk:
+    action: sdk:set
+    sdk: go:1.12
+
+  build:
+    action: exec:run
+    checkError: true
+    commands:
+      - cd $appPath
+      - ls myapp
+      - $cmd[1].stdout:/myapp/? rm myapp
+      - go build -o myapp
+
+  stop:
+    action: process:stop
+    input: myapp
+
+  start:
+    action: process:start
+    directory: $appPath/
+    watch: true
+    immuneToHangups: true
+    command: ./myapp
+
+```
+```bash
+endly app.yaml
+```
+
+![Go Output](/images/go_output.png)
+
 
 ### Application State
 

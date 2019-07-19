@@ -10,7 +10,6 @@ pipeline:
     URL: ssh://127.0.0.1
     credentials: dev
 
-
   setSdk:
     action: sdk:set
     sdk: jdk:1.8
