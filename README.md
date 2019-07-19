@@ -132,6 +132,7 @@ pipeline:
 ```
 
 ```bash
+cd deplyoment/docker/go
 endly app.yaml
 ```
 
