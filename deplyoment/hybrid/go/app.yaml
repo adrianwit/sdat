@@ -1,0 +1,54 @@
+init:
+  buildPath: $Pwd()
+  appPath: $Pwd()/myapp
+pipeline:
+
+  setTarget:
+    action: exec:setTarget
+    URL: ssh://127.0.0.1
+    credentials: dev
+
+  setSdk:
+    action: sdk:set
+    sdk: go:1.12
+
+  build:
+    action: exec:run
+    checkError: true
+    commands:
+      - cd $appPath
+      - ls *
+      - $cmd[1].stdout:/app/? rm app
+      - export GO111MODULE=on
+      - export GOOS=linux
+      - export CGO=0
+      - go build -o app
+  build:
+    action: docker:build
+    path: ${buildPath}
+    nocache: false
+    tag:
+      image: myapp
+      version: '1.0'
+
+  stop:
+    action: docker:stop
+    images:
+      - myapp
+
+  start:
+    action: docker:run
+    name: myapp
+    image: myapp:1.0
+    env:
+      PORT: 8081
+
+
+
+#  start:
+#    action: exec:run
+#    systemPaths:
+#      - /usr/local/bin
+#    commands:
+#      - docker-compose down
+#      - docker-compose up -d

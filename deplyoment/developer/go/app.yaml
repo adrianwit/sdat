@@ -19,6 +19,7 @@ pipeline:
       - cd $appPath
       - ls *
       - $cmd[1].stdout:/myapp/? rm myapp
+      - export GO111MODULE=on
       - go build -o myapp
 
   stop:

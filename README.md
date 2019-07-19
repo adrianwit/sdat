@@ -75,6 +75,7 @@ Where
 
 
 ```bash
+cd security
 endly backup.yaml -t=take
 endly backup.yaml -t=restore
 ```
@@ -281,6 +282,7 @@ pipeline:
 ```
 
 ```bash
+cd deplyoment/developer/tomcat
 endly app.yaml
 ```
     
@@ -313,6 +315,7 @@ pipeline:
       - cd $appPath
       - ls *
       - $cmd[1].stdout:/myapp/? rm myapp
+      - export GO111MODULE=on 
       - go build -o myapp
 
   stop:
@@ -330,12 +333,72 @@ pipeline:
 ```
 
 ```bash
+cd deplyoment/developer/go
 endly app.yaml
 ```
 
 ![Go Output](/images/go_output.png)
 
 #### Hybrid
+
+[app.yaml](deplyoment/hybrid/go/app.yaml)
+
+```yaml
+init:
+  buildPath: $Pwd()
+  appPath: $Pwd()/myapp
+pipeline:
+  setSdk:
+    action: sdk:set
+    sdk: go:1.12
+
+  build:
+    action: exec:run
+    checkError: true
+    commands:
+      - cd $appPath
+      - ls *
+      - $cmd[1].stdout:/app/? rm app
+      - export GO111MODULE=on
+      - export GOOS=linux
+      - export CGO=0
+      - go build -o app
+  build:
+    action: docker:build
+    path: ${buildPath}
+    nocache: false
+    tag:
+      image: myapp
+      version: '1.0'
+
+  start:
+    action: exec:run
+    systemPaths:
+      - /usr/local/bin
+    commands:
+      - docker-compose down
+      - docker-compose up -d
+```
+
+
+```bash
+cd deplyoment/hybrid/go
+endly app.yaml
+```
+
+Where:
+
+Where: 
+- [Dockerfile](deplyoment/hybrid/go/Dockerfile)
+    ```dockerfile
+    FROM alpine:3.10
+    RUN apk update && apk add ca-certificates && rm -rf /var/cache/apk/*
+    COPY myapp/app /app
+    CMD ["/app"]
+    ```
+
+
+![Go Output](/images/hybrid_output.png)
 
 #### Serverless
 
@@ -392,3 +455,7 @@ pipeline:
 
 Where
 - mysql-mydb-root is mysql credential created by ```endly -c=mysql-mydb-root```
+
+#### Datastore
+
+
