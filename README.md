@@ -207,6 +207,9 @@ pipeline:
       - "echo 'App URL: http://127.0.0.1:8080/app/hello'"
 
 ```
+```bash
+endly app.yaml
+```
 
 ![Backup Output](/images/tomcat_output.png)
 
