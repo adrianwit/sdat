@@ -28,6 +28,8 @@ pipeline:
   start:
     action: process:start
     directory: $appPath/
+    env:
+      PORT: 8081
     watch: true
     immuneToHangups: true
     command: ./myapp

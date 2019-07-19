@@ -1,5 +1,17 @@
 # Software Development Endly Automation Workflow Templates
 
+- [Security](#security)
+- [Build And Deployment](#build-and-deployment)
+   - [Developer machine](#developer-machine)
+     * [React App](#react-app)
+     * [Java Tomcat Webapp](#java-webapp)  
+     * [Golang app](#golang-app)
+   - [Docker](#docker)
+   - [Hybrid](#hybrid)
+   - [Serverless](#serverless)
+- [Application State](#application-state)
+    - [Database](#database) 
+      
 
 ### Security
 
@@ -148,7 +160,7 @@ Output:
 ![Node Output](/images/node_output.png)
 
 
-##### Java webapp (tomcat)
+##### Java webapp
 
 [app.yaml](deplyoment/developer/tomcat/app.yaml)
 ```yaml
@@ -223,6 +235,7 @@ init:
   appPath: $Pwd()/myapp
 
 pipeline:
+
   setTarget:
     action: exec:setTarget
     URL: ssh://127.0.0.1
@@ -237,7 +250,7 @@ pipeline:
     checkError: true
     commands:
       - cd $appPath
-      - ls myapp
+      - ls *
       - $cmd[1].stdout:/myapp/? rm myapp
       - go build -o myapp
 
@@ -248,17 +261,25 @@ pipeline:
   start:
     action: process:start
     directory: $appPath/
+    env:
+      PORT: 8081
     watch: true
     immuneToHangups: true
     command: ./myapp
-
 ```
+
 ```bash
 endly app.yaml
 ```
 
-
 ![Go Output](/images/go_output.png)
+
+
+#### Docker
+
+#### Hybrid
+
+#### Serverless
 
 
 ### Application State
