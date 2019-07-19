@@ -1,0 +1,32 @@
+init:
+  appPath: $Pwd()/hello
+  gcpCredentials: gcp-myservice
+
+pipeline:
+
+  setTarget:
+    action: exec:setTarget
+    URL: ssh://127.0.0.1
+    credentials: dev
+
+  setSdk:
+    action: sdk:set
+    sdk: go:1.12
+
+  vendor:
+    action: exec:run
+    commands:
+      - unset GOPATH
+      - GO111MODULE=on
+      - cd ${appPath}
+      - go mod vendor
+
+  deploy:
+    action: gcp/cloudfunctions:deploy
+    credentials: $gcpCredentials
+    '@name': HelloWorld
+    entryPoint: HelloWorldFn
+    runtime: go111
+    public: true
+    source:
+      URL: ${appPath}

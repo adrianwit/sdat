@@ -387,8 +387,6 @@ cd deplyoment/hybrid/go
 endly app.yaml
 ```
 
-Where:
-
 Where: 
 - [Dockerfile](deplyoment/hybrid/go/Dockerfile)
     ```dockerfile
@@ -452,7 +450,52 @@ endly app.yaml
 ##### Lambda
 
 
+[@app.yaml](deplyoment/serverless/lambda/go/app.yaml) 
+```yaml
+init:
+  functionRole: lambda-hello
+  appPath: $Pwd()/hello
+  appArchvive: ${appPath}/app.zip
+  awsCredentials: aws-myuser
 
+pipeline:
+
+  setTarget:
+    action: exec:setTarget
+    URL: ssh://127.0.0.1
+    credentials: dev
+
+  setSdk:
+    action: sdk:set
+    sdk: go:1.12
+
+
+  deploy:
+    build:
+      action: exec:run
+      checkError: true
+      commands:
+        - cd ${appPath}
+        - unset GOPATH
+        - export GOOS=linux
+        - export GOARCH=amd64
+        - go build -o app
+        - zip -j app.zip app
+
+    publish:
+      action: aws/lambda:deploy
+      credentials: $awsCredentials
+      functionname: HelloWorld
+      runtime:  go1.x
+      handler: app
+      code:
+        zipfile: $LoadBinary(${appArchvive})
+      rolename: $functionRole
+      attach:
+        - policyarn: arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+```
+![Go Output](/images/lambda_output.png)
 
 ### Application State
 
