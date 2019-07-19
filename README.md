@@ -403,6 +403,54 @@ Where:
 
 #### Serverless
 
+##### Cloud functions
+ 
+[@app.yaml](deplyoment/serverless/cloud_functions/go/app.yaml) 
+```yaml
+init:
+  appPath: $Pwd()/hello
+  gcpCredentials: gcp-myservice
+
+pipeline:
+
+  setTarget:
+    action: exec:setTarget
+    URL: ssh://127.0.0.1
+    credentials: dev
+
+  setSdk:
+    action: sdk:set
+    sdk: go:1.12
+
+  vendor:
+    action: exec:run
+    commands:
+      - unset GOPATH
+      - GO111MODULE=on
+      - cd ${appPath}
+      - go mod vendor
+
+  deploy:
+    action: gcp/cloudfunctions:deploy
+    credentials: $gcpCredentials
+    '@name': HelloWorld
+    entryPoint: HelloWorldFn
+    runtime: go111
+    public: true
+    source:
+      URL: ${appPath}
+```
+
+
+```bash
+cd deplyoment/serverless/go
+endly app.yaml
+```
+
+![Cloud Function Output](/images/cloud_function_output.png)
+
+##### Lambda
+
 
 
 
@@ -458,5 +506,10 @@ Where
 - mysql-mydb-root is mysql credential created by ```endly -c=mysql-mydb-root```
 
 #### Datastore
+
+#### File Storage
+
+#### Message Bus
+
 
 
