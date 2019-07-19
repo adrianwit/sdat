@@ -205,8 +205,8 @@ pipeline:
     commands:
       - $tomcatLocation/tomcat/bin/catalina.sh start
       - "echo 'App URL: http://127.0.0.1:8080/app/hello'"
-
 ```
+
 ```bash
 endly app.yaml
 ```
@@ -223,6 +223,10 @@ init:
   appPath: $Pwd()/myapp
 
 pipeline:
+  setTarget:
+    action: exec:setTarget
+    URL: ssh://127.0.0.1
+    credentials: dev
 
   setSdk:
     action: sdk:set
@@ -252,6 +256,7 @@ pipeline:
 ```bash
 endly app.yaml
 ```
+
 
 ![Go Output](/images/go_output.png)
 
@@ -306,4 +311,4 @@ pipeline:
 ```
 
 Where
-- mysql-mydb-root is mysql credential create by ```endly -c=mysql-mydb-root```
+- mysql-mydb-root is mysql credential created by ```endly -c=mysql-mydb-root```
