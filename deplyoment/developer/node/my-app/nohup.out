@@ -1,0 +1,16 @@
+
+> my-app@0.1.0 start /Projects/go/workspace/src/github.com/adrianwit/sdat/deplyoment/developer/node/my-app
+> react-scripts start
+
+Starting the development server...
+
+Compiled successfully!
+
+You can now view my-app in the browser.
+
+  Local:            http://localhost:3000/
+  On Your Network:  http://172.31.20.176:3000/
+
+Note that the development build is not optimized.
+To create a production build, use yarn build.
+
