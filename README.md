@@ -3,14 +3,14 @@
 - [Security](#security)
 - [Build And Deployment](#build-and-deployment)
    - [Docker](#docker)
-                
    - [Developer machine](#developer-machine)
      * [React App](#react-app)
      * [Java Tomcat Webapp](#java-webapp)  
      * [Golang app](#golang-app)
    - [Hybrid](#hybrid)
-   
    - [Serverless](#serverless)
+     * [Cloud functions](#cloud-functions)
+     * [Lambda](#lambda)  
 - [Application State](#application-state)
     - [Database](#database) 
       
