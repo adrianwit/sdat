@@ -57,7 +57,7 @@ Where
 
 - **mysql-mydb-root** is credentials file (~/.secret/mysql-mydb-root.json) created by  ```endly -c=mysql-mydb-root```
 - **gs-myservice** is google secrets credential file (~/.secret/gcp-myservice.json)  created for your service account
-- 'history -c' clear history for security reason
+- **history -c** clear history for security reason
 
 
 ```bash
