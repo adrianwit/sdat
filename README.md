@@ -1,6 +1,8 @@
 # Software Development Endly Automation Workflow Templates
 
 - [Security](#security)
+   - [Private Git Repository](#private-git)
+   - [Database credentials](#database-credentials)
 - [Build And Deployment](#build-and-deployment)
    - [Docker](#docker)
    - [Developer machine](#developer-machine)
@@ -17,7 +19,72 @@
 
 ## Security
 
-- [backup.yaml](security/backup.yaml)
+### Private git
+-[app.yaml](security/git/go/app.yaml)
+```yaml
+init:
+  appPath: $Pwd()/myapp
+
+pipeline:
+
+  setTarget:
+    action: exec:setTarget
+    URL: ssh://127.0.0.1
+    credentials: dev
+
+  setSdk:
+    action: sdk:set
+    sdk: go:1.12
+
+  build:
+    action: exec:run
+    checkError: true
+    terminators:
+      - Password
+      - Username
+    secrets:
+      gitSecrets: git-myaccount
+    commands:
+      - cd $appPath
+      - export GIT_TERMINAL_PROMPT=1
+      - ls *
+      - $cmd[1].stdout:/myapp/? rm myapp
+      - export GO111MODULE=on
+      - go build -o myapp
+      - '$cmd[5].stdout:/Username/? $gitSecrets.username'
+      - '$cmd[6].stdout:/Password/? $gitSecrets.password'
+      - '$cmd[7].stdout:/Username/? $gitSecrets.username'
+      - '$cmd[8].stdout:/Password/? $gitSecrets.password'
+
+
+  stop:
+    action: process:stop
+    input: myapp
+
+  start:
+    action: process:start
+    directory: $appPath/
+    env:
+      PORT: 8081
+    watch: true
+    immuneToHangups: true
+    command: ./myapp
+```
+
+```bash
+cd security/git/go/
+endly app
+```
+
+- Where **git-myaccount** is credentials file for private git repository created by endly -c=git-myaccount
+
+Output:
+
+![Backup Output](/images/secret_git_output.png)
+
+
+### Database credentials
+- [backup.yaml](security/database/backup.yaml)
 ```yaml
 init:
   suffix: 20190716
@@ -75,7 +142,7 @@ Where
 
 
 ```bash
-cd security
+cd security/database
 endly backup.yaml -t=take
 endly backup.yaml -t=restore
 ```
@@ -83,6 +150,7 @@ endly backup.yaml -t=restore
 Output:
 
 ![Backup Output](/images/backup_output.png)
+
 
 
 Troubleshooting secrets:
