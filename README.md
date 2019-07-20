@@ -20,7 +20,7 @@
 ## Security
 
 ### Private git
--[app.yaml](security/git/go/app.yaml)
+- [@app.yaml](security/git/go/app.yaml)
 ```yaml
 init:
   appPath: $Pwd()/myapp
@@ -84,7 +84,7 @@ Output:
 
 
 ### Database credentials
-- [backup.yaml](security/database/backup.yaml)
+- [@backup.yaml](security/database/backup.yaml)
 ```yaml
 init:
   suffix: 20190716
@@ -171,7 +171,7 @@ Reference: [Endly Secrets](https://github.com/viant/endly/tree/master/doc/secret
 ### Docker
 
 
-[app.yaml](deplyoment/docker/go/app.yaml)
+- [@app.yaml](deplyoment/docker/go/app.yaml)
 
 ```yaml
 init:
@@ -230,7 +230,7 @@ Reference: [Endly Docker Service](https://github.com/viant/endly/tree/master/sys
 
 #### React App
 
-[app.yaml](deplyoment/developer/node/app.yaml)
+- [@app.yaml](deplyoment/developer/node/app.yaml)
 ```yaml
 init:
   sourceCode: $Pwd()/my-app
@@ -293,7 +293,7 @@ Output:
 
 #### Java webapp
 
-[app.yaml](deplyoment/developer/tomcat/app.yaml)
+- [@app.yaml](deplyoment/developer/tomcat/app.yaml)
 ```yaml
 init:
   appPath: $Pwd()/app
@@ -361,7 +361,7 @@ endly app.yaml
 
 #### Golang app
 
-[app.yaml](deplyoment/developer/go/app.yaml)
+- [@app.yaml](deplyoment/developer/go/app.yaml)
 ```yaml
 init:
   appPath: $Pwd()/myapp
@@ -410,7 +410,7 @@ endly app.yaml
 
 ### Hybrid
 
-[app.yaml](deplyoment/hybrid/go/app.yaml)
+- [@app.yaml](deplyoment/hybrid/go/app.yaml)
 
 ```yaml
 init:
@@ -471,7 +471,8 @@ Where:
 
 #### Cloud functions
  
-[@app.yaml](deplyoment/serverless/cloud_functions/go/app.yaml) 
+- [@app.yaml](deplyoment/serverless/cloud_functions/go/app.yaml) 
+
 ```yaml
 init:
   appPath: $Pwd()/hello
@@ -517,8 +518,8 @@ endly app.yaml
 
 #### Lambda
 
+- [@app.yaml](deplyoment/serverless/lambda/go/app.yaml) 
 
-[@app.yaml](deplyoment/serverless/lambda/go/app.yaml) 
 ```yaml
 init:
   functionRole: lambda-hello
@@ -569,7 +570,7 @@ pipeline:
 
 ### Database
 
-[setup.yaml](state/database/setup.yaml)
+- [@setup.yaml](state/database/setup.yaml)
 ```yaml
 init:
   mydbCredentials: mysql-mydb-root
