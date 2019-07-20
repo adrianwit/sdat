@@ -15,7 +15,11 @@
      * [Lambda](#lambda)  
 - [Application State](#application-state)
     - [Database](#database) 
-      
+    - [Datastore](#datastore)
+     * [DynamoDb](#dynamo) 
+     * [Firebase](#firebase) 
+     * [Aerospike](#aerospike) 
+            
 
 ## Security
 
@@ -619,9 +623,18 @@ Where
 
 ### Datastore
 
+#### DynamoDb
+
+#### Firebase
+
+#### Aerospike
+
 ### File Storage
 
 ### Message Bus
 
+#### AWS - Simple Queue Service
+
+#### GCP - Pub/Sub
 
 
