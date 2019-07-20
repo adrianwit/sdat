@@ -48,7 +48,7 @@ pipeline:
       - cd $appPath
       - export GIT_TERMINAL_PROMPT=1
       - ls *
-      - $cmd[1].stdout:/myapp/? rm myapp
+      - $cmd[2].stdout:/myapp/? rm myapp
       - export GO111MODULE=on
       - go build -o myapp
       - '$cmd[5].stdout:/Username/? $gitSecrets.username'
