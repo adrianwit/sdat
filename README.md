@@ -14,9 +14,13 @@
      * [Cloud functions](#cloud-functions)
      * [Lambda](#lambda)  
 - [Application State](#application-state)
-  - [Database](#database)   
+  - [Database](#database)  
+     * [MySQL](#mysql) 
+     * [PostgreSQL](#postgresql) 
+     * [BigQuery](#bigquery) 
+     
   - [Datastore](#datastore)
-     * [DynamoDb](#dynamo) 
+     * [DynamoDD](#dynamodb) 
      * [Firebase](#firebase) 
      * [Aerospike](#aerospike) 
             
@@ -314,13 +318,11 @@ pipeline:
   setSdk:
     action: sdk:set
     sdk: jdk:1.8
-
   setMaven:
     action: deployment:deploy
     appName: maven
     version: 3.5
     baseLocation: /usr/local
-
   deployTomcat:
     action: deployment:deploy
     appName: tomcat
@@ -339,14 +341,13 @@ pipeline:
       URL: $appPath/target/my-app-1.0.war
     dest:
       URL: $tomcatTarget/app.war
-
+      
   stop:
     action: exec:run
     commands:
       - ps -ef | grep catalina | grep -v grep
       - $cmd[0].stdout:/catalina/ ? $tomcatLocation/tomcat/bin/catalina.sh stop
-
-  stop:
+  start:
     action: exec:run
     checkErrors: true
     commands:
@@ -574,7 +575,9 @@ pipeline:
 
 ### Database
 
-- [@setup.yaml](state/database/setup.yaml)
+#### Mysql
+
+- [@setup.yaml](state/database/mysql/setup.yaml)
 ```yaml
 init:
   mydbCredentials: mysql-mydb-root
@@ -621,6 +624,12 @@ pipeline:
 Where
 - mysql-mydb-root is mysql credential created by ```endly -c=mysql-mydb-root```
 
+#### PostgreSQL
+
+
+#### BigQuery
+
+
 ### Datastore
 
 #### DynamoDb
@@ -628,6 +637,7 @@ Where
 #### Firebase
 
 #### Aerospike
+
 
 ### File Storage
 

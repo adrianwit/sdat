@@ -13,13 +13,11 @@ pipeline:
   setSdk:
     action: sdk:set
     sdk: jdk:1.8
-
   setMaven:
     action: deployment:deploy
     appName: maven
     version: 3.5
     baseLocation: /usr/local
-
   deployTomcat:
     action: deployment:deploy
     appName: tomcat
@@ -44,8 +42,7 @@ pipeline:
     commands:
       - ps -ef | grep catalina | grep -v grep
       - $cmd[0].stdout:/catalina/ ? $tomcatLocation/tomcat/bin/catalina.sh stop
-
-  stop:
+  start:
     action: exec:run
     checkErrors: true
     commands:
