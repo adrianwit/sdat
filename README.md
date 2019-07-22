@@ -520,6 +520,9 @@ endly app.yaml
 
 ![Cloud Function Output](/images/cloud_function_output.png)
 
+
+Reference: [Cloud function e2e automation](https://github.com/adrianwit/serverless_e2e/tree/master/cloud_function)
+
 #### Lambda
 
 - [@app.yaml](deplyoment/serverless/lambda/go/app.yaml) 
@@ -569,6 +572,9 @@ pipeline:
 
 ```
 ![Go Output](/images/lambda_output.png)
+
+Reference: [Cloud function e2e automation](https://github.com/adrianwit/serverless_e2e/tree/master/lambda)
+
 
 ## Application State
 
