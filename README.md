@@ -309,7 +309,6 @@ init:
   tomcatTarget: $tomcatLocation/tomcat/webapps
 
 pipeline:
-
   setTarget:
     action: exec:setTarget
     URL: ssh://127.0.0.1
