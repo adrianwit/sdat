@@ -1,0 +1,19 @@
+init:
+  bqCredentials: gcp-myaccount
+
+pipeline:
+  create:
+    action: dsunit:init
+    datastore: mydb
+    config:
+      driverName: bigquery
+      credentials: $bqCredentials
+      parameters:
+        datasetId: mydb
+    scripts:
+      - URL: mydb/schema.sql
+
+  load:
+    action: dsunit:prepare
+    datastore: mydb
+    URL: mydb/data

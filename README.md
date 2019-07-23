@@ -19,7 +19,7 @@
      * [PostgreSQL](#postgresql) 
      * [BigQuery](#bigquery) 
   - [Datastore](#datastore)
-     * [DynamoDD](#dynamodb) 
+     * [DynamoDB](#dynamodb) 
      * [Firebase](#firebase) 
      * [Aerospike](#aerospike) 
   - [Message Bus](#message-bus)
