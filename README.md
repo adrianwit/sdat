@@ -516,7 +516,7 @@ pipeline:
 
 
 ```bash
-cd deplyoment/serverless/go
+cd deplyoment/serverless/cloud_functions/go
 endly app.yaml
 ```
 
@@ -573,9 +573,16 @@ pipeline:
         - policyarn: arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
 
 ```
+
+```bash
+cd deplyoment/serverless/lambda/go
+endly app.yaml
+```
+
+
 ![Go Output](/images/lambda_output.png)
 
-Reference: [Cloud function e2e automation](https://github.com/adrianwit/serverless_e2e/tree/master/lambda)
+Reference: [Lambda e2e automation](https://github.com/adrianwit/serverless_e2e/tree/master/lambda)
 
 
 ## Application State
@@ -630,8 +637,68 @@ pipeline:
 
 Where
 - mysql-mydb-root is mysql credential created by ```endly -c=mysql-mydb-root```
+- 'mydb/data' is the source folder where *.json data file are matched with database tables.
+
+
+```bash
+cd deplyoment/state/database/mysql
+endly app.yaml
+```
 
 #### PostgreSQL
+
+Where
+- mysql-mydb-root is mysql credential created by ```endly -c=mysql-mydb-root```
+
+
+- [@setup.yaml](state/database/postgresql/setup.yaml)
+```yaml
+init:
+  mydbCredentials: pq-mydb-root
+  mydbSecrets: ${secrets.$mydbCredentials}
+  dbIP:
+    pg: 127.0.0.1
+
+pipeline:
+  services:
+    postgresql:
+      action: docker:run
+      image: postgres:9.6-alpine
+      name: mydb
+      ports:
+        5432: 5432
+      env:
+        POSTGRES_USER: ${mydbSecrets.Username}
+        POSTGRES_PASSWORD: ${mydbSecrets.Password}
+
+  create:
+    action: dsunit:init
+    datastore: mydb
+    config:
+      driverName: postgres
+      descriptor: host=${dbIP.pg} port=5432 user=[username] password=[password] dbname=[dbname] sslmode=disable
+      credentials: $mydbCredentials
+    admin:
+      datastore: postgres
+      ping: true
+      config:
+        driverName: postgres
+        descriptor: host=${dbIP.pg} port=5432 user=[username] password=[password] dbname=postgres sslmode=disable
+        credentials: $mydbCredentials
+    recreate: true
+    scripts:
+      - URL: mydb/schema.sql
+
+  load:
+    action: dsunit:prepare
+    datastore: mydb
+    URL: mydb/data
+```
+
+```bash
+cd deplyoment/state/database/postgresql
+endly app.yaml
+```
 
 
 #### BigQuery
