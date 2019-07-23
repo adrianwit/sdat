@@ -18,11 +18,13 @@
      * [MySQL](#mysql) 
      * [PostgreSQL](#postgresql) 
      * [BigQuery](#bigquery) 
-     
   - [Datastore](#datastore)
      * [DynamoDD](#dynamodb) 
      * [Firebase](#firebase) 
      * [Aerospike](#aerospike) 
+  - [Message Bus](#message-bus)
+     * [GCP - Pub/Sub](#gcp-pubsub) 
+     * [AWS - Simple Queue Service](#aws-simple-queue-service) 
             
 
 ## Security
@@ -648,8 +650,8 @@ Where
 
 ### Message Bus
 
-#### AWS - Simple Queue Service
+#### AWS Simple Queue Service
 
-#### GCP - Pub/Sub
+#### GCP Pub/Sub
 
 
