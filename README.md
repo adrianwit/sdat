@@ -704,19 +704,6 @@ init:
   mydbSecrets: ${secrets.$mydbCredentials}
   dbIP:
     pg: 127.0.0.1
-
-pipeline:
-  services:
-    postgresql:
-      action: docker:run
-      image: postgres:9.6-alpine
-      name: mydb
-      ports:
-        5432: 5432
-      env:
-        POSTGRES_USER: ${mydbSecrets.Username}
-        POSTGRES_PASSWORD: ${mydbSecrets.Password}
-
   create:
     action: dsunit:init
     datastore: mydb
