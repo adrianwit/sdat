@@ -14,6 +14,7 @@
      * [Cloud functions](#cloud-functions)
      * [Lambda](#lambda)  
 - [Application State](#application-state)
+  - [Docker](#docker)
   - [Database](#database)  
      * [MySQL](#mysql) 
      * [PostgreSQL](#postgresql) 
@@ -586,6 +587,51 @@ Reference: [Lambda e2e automation](https://github.com/adrianwit/serverless_e2e/t
 
 
 ## Application State
+
+### Docker
+
+- [@setup.yaml](state/docker/db.yaml)
+```yaml
+init:
+  mydbCredentials: mysql-mydb-root
+  mydbSecrets: ${secrets.$mydbCredentials}
+
+pipeline:
+  services:
+    mysql:
+      action: docker:run
+      image: mysql:5.7
+      name: mydb1
+      ports:
+        3306: 3306
+      env:
+        MYSQL_ROOT_PASSWORD: ${mydbSecrets.Password}
+    aerospike:
+      action: docker:run
+      image: 'aerospike/aerospike-server:3.16.0.6'
+      name: mydb2
+      ports:
+        3000: 3000
+        3001: 3001
+        3002: 3002
+        3003: 3003
+        8081: 8081
+      cmd:
+        - asd
+        - --config-file
+        - /opt/aerospike/etc/aerospike.conf
+      entrypoint:
+        - /entrypoint.sh
+```
+
+```bash
+cd deplyoment/state/docker
+endly db
+```
+
+![Docker Output](/images/state_docker_output.png)
+
+
 
 ### Database
 
