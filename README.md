@@ -694,7 +694,7 @@ endly app.yaml
 #### PostgreSQL
 
 Where
-- mysql-mydb-root is mysql credential created by ```endly -c=mysql-mydb-root```
+- pq-mydb-root is PostgreSQL credential created by ```endly -c=pq-mydb-root```
 
 
 - [@setup.yaml](state/database/postgresql/setup.yaml)

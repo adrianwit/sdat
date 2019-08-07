@@ -1,15 +1,17 @@
-[  {},
+[
+  {},
   {
     "id": 1,
     "event_type": 2,
     "quantity": 33.23432374000549,
-    "timestamp": "2019-03-11 02:20:33"
+    "timestamp": "$FormatTime('3daysAgo', 'yyyy-MM-dd hh:mm:ss')",
+    "query_string": "?p1=${Rand(1,10)}&p2=0"
   },
   {
     "id": 2,
     "event_type": 3,
     "quantity": 21.957962334156036,
-    "timestamp": "2019-03-15 12:07:33"
+    "timestamp": "$FormatTime('now', 'yyyy-MM-dd hh:mm:ss')"
   },
   {
     "id": 3,
