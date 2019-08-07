@@ -590,7 +590,7 @@ Reference: [Lambda e2e automation](https://github.com/adrianwit/serverless_e2e/t
 
 ### Docker
 
-- [@setup.yaml](state/docker/db.yaml)
+- [@db.yaml](state/docker/db.yaml)
 ```yaml
 init:
   mydbCredentials: mysql-mydb-root
