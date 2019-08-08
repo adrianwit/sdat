@@ -21,6 +21,7 @@
      * [BigQuery](#bigquery) 
   - [Datastore](#datastore)
      * [DynamoDB](#dynamodb) 
+     * [MongoDB](#mongo) 
      * [Firebase](#firebase) 
      * [Aerospike](#aerospike) 
   - [Message Bus](#message-bus)
@@ -753,6 +754,44 @@ endly app.yaml
 ### Datastore
 
 #### DynamoDb
+
+#### MongoDB
+
+- [@setup.yaml](state/datastore/mongo/setup.yaml)
+```yaml
+pipeline:
+  services:
+    mongo:
+      action: docker:run
+      image: mongo:latest
+      name: mymongo
+      ports:
+        27017: 27017
+
+  register:
+    action: dsunit:register
+    datastore: mydb
+    ping: true
+    config:
+      driverName: mgc
+      parameters:
+        dbname: mydb
+        host: 127.0.0.1
+        keyColumn: id
+
+  load:
+    action: dsunit:prepare
+    datastore: mydb
+    URL: mydb/data
+```
+
+```bash
+cd deplyoment/state/datastore/mongo
+endly app.yaml
+```
+
+![Mongo Output](/images/mongo_output.png)
+
 
 #### Firebase
 
