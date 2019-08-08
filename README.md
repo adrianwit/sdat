@@ -689,7 +689,7 @@ Where
 
 ```bash
 cd deplyoment/state/database/mysql
-endly app.yaml
+endly setup
 ```
 
 #### PostgreSQL
@@ -744,7 +744,7 @@ pipeline:
 
 ```bash
 cd deplyoment/state/database/postgresql
-endly app.yaml
+endly setup
 ```
 
 
@@ -787,7 +787,7 @@ pipeline:
 
 ```bash
 cd deplyoment/state/datastore/mongo
-endly app.yaml
+endly setup
 ```
 
 ![Mongo Output](/images/mongo_output.png)
