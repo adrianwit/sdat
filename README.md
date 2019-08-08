@@ -21,7 +21,7 @@
      * [BigQuery](#bigquery) 
   - [Datastore](#datastore)
      * [DynamoDB](#dynamodb) 
-     * [MongoDB](#mongo) 
+     * [MongoDB](#mongodb) 
      * [Firebase](#firebase) 
      * [Aerospike](#aerospike) 
   - [Message Bus](#message-bus)
