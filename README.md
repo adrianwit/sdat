@@ -893,6 +893,92 @@ endly setup
 #### Aerospike
 
 
+[@setup.yaml](state/datastore/aerospike/setup.yaml)
+```yaml
+pipeline:
+  services:
+    aerospike:
+      action: docker:run
+      image: aerospike/aerospike-server:latest
+      name: aero
+      ports:
+        3000: 3000
+        3001: 3001
+        3002: 3002
+        3004: 3004
+
+  setup:
+    create:
+      action: dsunit:init
+      datastore: aerodb
+      ping: true
+      config:
+        driverName: aerospike
+        parameters:
+          dbname: aerodb
+          excludedColumns: uid
+          namespace: test
+          host: 127.0.0.1
+          port: 3000
+          users.keyColumn: uid
+      recreate: true
+
+    load:
+      action: dsunit:prepare
+      datastore: aerodb
+      URL: aerodb/data
+
+```
+
+```bash
+cd state/datastore/aerospike
+endly setup
+```
+
+**Setup Data:**
+[@users.json](state/datastore/aerospike/aerodb/data/users.json)
+```json
+[
+  {},
+  {
+    "uid": "${uuid.next}",
+    "events": {
+      "$AsInt(952319704)": {
+        "ttl": 1565478965
+      },
+      "$AsInt(947840387)": {
+        "ttl": 1565479008
+      }
+    }
+  },
+  {
+    "uid": "${uuid.next}",
+    "events": {
+      "$AsInt(857513776)": {
+        "ttl": 1565479080
+      },
+      "$AsInt(283419022)": {
+        "ttl": 1565479092
+      }
+    }
+  }
+]
+```
+
+```bash
+aql> SELECT * FROM test.users;
++----------------------------------------+---------------------------------------------------------------------+
+| PK                                     | events                                                              |
++----------------------------------------+---------------------------------------------------------------------+
+| "3b6b7f47-453d-4a07-aff0-879bc85d264c" | MAP('{947840387:{"ttl":1565479008}, 952319704:{"ttl":1565478965}}') |
+| "67bf0d31-b9a7-417c-86dd-62c03d2bd60c" | MAP('{283419022:{"ttl":1565479092}, 857513776:{"ttl":1565479080}}') |
++----------------------------------------+---------------------------------------------------------------------+
+2 rows in set (0.142 secs)
+
+OK
+
+```
+
 #### DynamoDb
 
 

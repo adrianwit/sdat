@@ -7,18 +7,19 @@ pipeline:
       ports:
         27017: 27017
 
-  register:
-    action: dsunit:register
-    datastore: mydb
-    ping: true
-    config:
-      driverName: mgc
-      parameters:
-        dbname: mydb
-        host: 127.0.0.1
-        keyColumn: id
+  setup:
+    register:
+      action: dsunit:register
+      datastore: mydb
+      ping: true
+      config:
+        driverName: mgc
+        parameters:
+          dbname: mydb
+          host: 127.0.0.1
+          'users.keyColumn': id
 
-  load:
-    action: dsunit:prepare
-    datastore: mydb
-    URL: mydb/data
+    load:
+      action: dsunit:prepare
+      datastore: mydb
+      URL: mydb/data

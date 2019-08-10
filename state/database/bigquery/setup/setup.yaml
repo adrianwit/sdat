@@ -2,18 +2,19 @@ init:
   bqCredentials: gcp-e2e
 
 pipeline:
-  create:
-    action: dsunit:init
-    datastore: mydb
-    config:
-      driverName: bigquery
-      credentials: $bqCredentials
-      parameters:
-        datasetId: mydb
-    scripts:
-      - URL: mydb/schema.sql
+  setup:
+    create:
+      action: dsunit:init
+      datastore: mydb
+      config:
+        driverName: bigquery
+        credentials: $bqCredentials
+        parameters:
+          datasetId: mydb
+      scripts:
+        - URL: mydb/schema.sql
 
-  load:
-    action: dsunit:prepare
-    datastore: mydb
-    URL: mydb/data
+    load:
+      action: dsunit:prepare
+      datastore: mydb
+      URL: mydb/data

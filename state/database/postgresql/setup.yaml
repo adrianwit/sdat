@@ -16,25 +16,26 @@ pipeline:
         POSTGRES_USER: ${mydbSecrets.Username}
         POSTGRES_PASSWORD: ${mydbSecrets.Password}
 
-  create:
-    action: dsunit:init
-    datastore: mydb
-    config:
-      driverName: postgres
-      descriptor: host=${dbIP.pg} port=5432 user=[username] password=[password] dbname=[dbname] sslmode=disable
-      credentials: $mydbCredentials
-    admin:
-      datastore: postgres
-      ping: true
+  setup:
+    create:
+      action: dsunit:init
+      datastore: mydb
       config:
         driverName: postgres
-        descriptor: host=${dbIP.pg} port=5432 user=[username] password=[password] dbname=postgres sslmode=disable
+        descriptor: host=${dbIP.pg} port=5432 user=[username] password=[password] dbname=[dbname] sslmode=disable
         credentials: $mydbCredentials
-    recreate: true
-    scripts:
-      - URL: mydb/schema.sql
+      admin:
+        datastore: postgres
+        ping: true
+        config:
+          driverName: postgres
+          descriptor: host=${dbIP.pg} port=5432 user=[username] password=[password] dbname=postgres sslmode=disable
+          credentials: $mydbCredentials
+      recreate: true
+      scripts:
+        - URL: mydb/schema.sql
 
-  load:
-    action: dsunit:prepare
-    datastore: mydb
-    URL: mydb/data
+    load:
+      action: dsunit:prepare
+      datastore: mydb
+      URL: mydb/data
