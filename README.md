@@ -750,7 +750,7 @@ endly setup
 
 #### BigQuery
 
-####### Big Query API - bq copy
+###### API copy
 
 [@copy.yaml](state/database/bigquery/api/copy.yaml)
 ```yaml
@@ -818,7 +818,7 @@ cd deplyoment/state/database/bigquery/api
 endly copy
 ```
 
-####### Big Query Setup
+###### Setup
 
 [@setup.yaml](state/database/bigquery/setup/setup.yaml)
 ```yaml
