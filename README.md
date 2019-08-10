@@ -22,7 +22,7 @@
   - [Datastore](#datastore)
      * [DynamoDB](#dynamodb) 
      * [MongoDB](#mongodb) 
-     * [Firebase](#firebase) 
+     * [Firestore](#firesore) 
      * [Aerospike](#aerospike) 
   - [Message Bus](#message-bus)
      * [GCP - Pub/Sub](#gcp-pubsub) 
@@ -750,10 +750,106 @@ endly setup
 
 #### BigQuery
 
+####### Big Query API - bq copy
+
+[@copy.yaml](state/database/bigquery/api/copy.yaml)
+```yaml
+init:
+  i: 0
+  gcpCredentials: gcp-e2e
+  gcpSecrets: ${secrets.$gcpCredentials}
+
+  src:
+    projectID: $gcpSecrets.ProjectID
+    datasetID: db1
+  dest:
+    projectID: $gcpSecrets.ProjectID
+    datasetID: db1e2e
+
+pipeline:
+  registerSource:
+    action: dsunit:register
+    datastore: ${src.datasetID}
+    config:
+      driverName: bigquery
+      credentials: $gcpCredentials
+      parameters:
+        datasetId: $src.datasetID
+
+  readTables:
+    action: dsunit:query
+    datastore: ${src.datasetID}
+    SQL: SELECT table_id AS table FROM `${src.projectID}.${src.datasetID}.__TABLES__`
+    post:
+      dataset: $Records
+
+
+  copyTables:
+    loop:
+      action: print
+      message: $i/$Len($dataset) -> $dataset[$i].table
+
+    copyTable:
+      action: gcp/bigquery:copy
+      logging: false
+      credentials: $gcpCredentials
+      sourceTable:
+        projectID: ${src.projectID}
+        datasetID: ${src.datasetID}
+        tableID: $dataset[$i].table
+      destinationTable:
+        projectID: ${dest.projectID}
+        datasetID: ${dest.datasetID}
+        tableID: $dataset[$i].table
+
+    inc:
+      action: nop
+      init:
+        _ : $i++
+    goto:
+      when: $i < $Len($dataset)
+      action: goto
+      task: copyTables
+
+```
+
+```bash
+cd deplyoment/state/database/bigquery/api
+endly copy
+```
+
+####### Big Query Setup
+
+[@setup.yaml](state/database/bigquery/setup/setup.yaml)
+```yaml
+init:
+  bqCredentials: gcp-e2e
+
+pipeline:
+  create:
+    action: dsunit:init
+    datastore: mydb
+    config:
+      driverName: bigquery
+      credentials: $bqCredentials
+      parameters:
+        datasetId: mydb
+    scripts:
+      - URL: mydb/schema.sql
+
+  load:
+    action: dsunit:prepare
+    datastore: mydb
+    URL: mydb/data
+```
+
+```bash
+cd deplyoment/state/database/bigquery/setup
+endly setup
+```
+
 
 ### Datastore
-
-#### DynamoDb
 
 #### MongoDB
 
@@ -793,9 +889,14 @@ endly setup
 ![Mongo Output](/images/mongo_output.png)
 
 
-#### Firebase
-
 #### Aerospike
+
+
+#### DynamoDb
+
+
+#### Firesore
+
 
 
 ### File Storage

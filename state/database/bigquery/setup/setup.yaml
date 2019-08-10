@@ -1,5 +1,5 @@
 init:
-  bqCredentials: gcp-myaccount
+  bqCredentials: gcp-e2e
 
 pipeline:
   create:
