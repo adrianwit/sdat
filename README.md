@@ -682,7 +682,7 @@ pipeline:
     URL: mydb/data
 ```
 
-Where
+_Where_
 - mysql-mydb-root is mysql credential created by ```endly -c=mysql-mydb-root```
 - 'mydb/data' is the source folder where *.json data file are matched with database tables.
 
@@ -693,9 +693,6 @@ endly setup
 ```
 
 #### PostgreSQL
-
-Where
-- pq-mydb-root is PostgreSQL credential created by ```endly -c=pq-mydb-root```
 
 
 - [@setup.yaml](state/database/postgresql/setup.yaml)
@@ -741,6 +738,10 @@ pipeline:
     datastore: mydb
     URL: mydb/data
 ```
+
+_Where_
+- pq-mydb-root is PostgreSQL credential created by ```endly -c=pq-mydb-root```
+
 
 ```bash
 cd deplyoment/state/database/postgresql
