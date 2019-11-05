@@ -1101,6 +1101,7 @@ pipeline:
 ```
 
 ![Dynamodb Output](/images/dynamo_output.png)
+![Dynamodb Data](/images/dynamo_data.png)
 
 #### Firestore
 

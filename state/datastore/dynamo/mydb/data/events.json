@@ -1,3 +1,0 @@
-[
-  {"EventDate": "$FormatTime('now','yyyy-MM-dd')", "EventType": 0, "Qty": 3}
-]
