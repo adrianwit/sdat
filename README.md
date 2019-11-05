@@ -22,7 +22,7 @@
   - [Datastore](#datastore)
      * [DynamoDB](#dynamodb) 
      * [MongoDB](#mongodb) 
-     * [Firestore](#firesore) 
+     * [Firestore](#firestore) 
      * [Aerospike](#aerospike) 
   - [Message Bus](#message-bus)
      * [GCP - Pub/Sub](#gcp-pubsub) 
@@ -32,6 +32,16 @@
 ## Security
 
 ### Private git
+
+
+The following workflow shows example how to use private git repo without compromising secrets. 
+
+```bash
+cd security/git/go/
+endly app
+```
+_Where:_
+
 - [@app.yaml](security/git/go/app.yaml)
 ```yaml
 init:
@@ -83,12 +93,9 @@ pipeline:
     command: ./myapp
 ```
 
-```bash
-cd security/git/go/
-endly app
-```
 
-- Where **git-myaccount** is credentials file for private git repository created by endly -c=git-myaccount
+
+- **git-myaccount** is credentials file for private git repository created by endly -c=git-myaccount
 
 Output:
 
@@ -96,6 +103,18 @@ Output:
 
 
 ### Database credentials
+
+The following workflow shows example how run database backup without compromising database credentials.
+
+
+```bash
+cd security/database
+endly backup.yaml -t=take
+endly backup.yaml -t=restore
+```
+
+_Where:_
+
 - [@backup.yaml](security/database/backup.yaml)
 ```yaml
 init:
@@ -153,11 +172,6 @@ Where
 - **history -c** clear history for security reason
 
 
-```bash
-cd security/database
-endly backup.yaml -t=take
-endly backup.yaml -t=restore
-```
 
 Output:
 
@@ -178,10 +192,17 @@ Reference: [Endly Secrets](https://github.com/viant/endly/tree/master/doc/secret
 
 ## Build and Deployment
 
-
-
 ### Docker
 
+The following workflow show how to build a application docker container image.
+
+
+```bash
+cd deplyoment/docker/go
+endly app.yaml
+```
+
+_Where:_ 
 
 - [@app.yaml](deplyoment/docker/go/app.yaml)
 
@@ -211,14 +232,8 @@ pipeline:
       PORT: 8081
 ```
 
-```bash
-cd deplyoment/docker/go
-endly app.yaml
-```
 
-![Docker Output](/images/docker_output.png)
 
-Where: 
 - [Dockerfile](/deplyoment/docker/go/Dockerfile)
     ```dockerfile
     # transient image
@@ -235,12 +250,25 @@ Where:
     ```
 
 
+![Docker Output](/images/docker_output.png)
+
+
 Reference: [Endly Docker Service](https://github.com/viant/endly/tree/master/system/docker)
 
 
 ### Developer machine
 
 #### React App
+
+The following workflow shows how to automate react app build and deployment. 
+
+
+```bash
+cd deplyoment/developer/node
+endly app.yaml -m
+```
+
+_Where:_ 
 
 - [@app.yaml](deplyoment/developer/node/app.yaml)
 ```yaml
@@ -287,16 +315,11 @@ pipeline:
 
 ```
 
-where
 - '-m' option enables interactive mode (endly continues to run unless ctr-c)
 - cloud.machine is your localhost or cloud VM
 - dev is credentials created for cloud machine to connect with  SSH service, created by ```endly -c=dev```
 
 
-```bash
-cd deplyoment/developer/node
-endly app.yaml -m
-```
 
 Output:
 
@@ -304,6 +327,16 @@ Output:
 
 
 #### Java webapp
+
+The following workflow shows how to automate java webapp build and deployment.
+
+
+```bash
+cd deplyoment/developer/tomcat
+endly app.yaml
+```
+
+_Where:_ 
 
 - [@app.yaml](deplyoment/developer/tomcat/app.yaml)
 ```yaml
@@ -358,16 +391,20 @@ pipeline:
       - "echo 'App URL: http://127.0.0.1:8080/app/hello'"
 ```
 
-```bash
-cd deplyoment/developer/tomcat
-endly app.yaml
-```
     
 ![Tomcat Output](/images/tomcat_output.png)
 
 
 
 #### Golang app
+
+The following workflow shows how to automate golang build and deployment.
+
+```bash
+cd deplyoment/developer/go
+endly app.yaml
+```
+_Where:_ 
 
 - [@app.yaml](deplyoment/developer/go/app.yaml)
 ```yaml
@@ -409,14 +446,19 @@ pipeline:
     command: ./myapp
 ```
 
-```bash
-cd deplyoment/developer/go
-endly app.yaml
-```
 
 ![Go Output](/images/go_output.png)
 
 ### Hybrid
+
+The following workflow shows how to automate go app build and deployment in hybrid mode.
+
+```bash
+cd deplyoment/hybrid/go
+endly app.yaml
+```
+
+_Where:_ 
 
 - [@app.yaml](deplyoment/hybrid/go/app.yaml)
 
@@ -440,7 +482,7 @@ pipeline:
       - export GOOS=linux
       - export CGO=0
       - go build -o app
-  build:
+  buildImage:
     action: docker:build
     path: ${buildPath}
     nocache: false
@@ -457,13 +499,6 @@ pipeline:
       - docker-compose up -d
 ```
 
-
-```bash
-cd deplyoment/hybrid/go
-endly app.yaml
-```
-
-Where: 
 - [Dockerfile](deplyoment/hybrid/go/Dockerfile)
     ```dockerfile
     FROM alpine:3.10
@@ -478,6 +513,17 @@ Where:
 ### Serverless
 
 #### Cloud functions
+
+
+The following workflow shows how automate cloud functions deployment.
+
+```bash
+cd deplyoment/serverless/cloud_functions/go
+endly app.yaml
+```
+
+_Where:_ 
+
  
 - [@app.yaml](deplyoment/serverless/cloud_functions/go/app.yaml) 
 
@@ -517,17 +563,25 @@ pipeline:
 ```
 
 
-```bash
-cd deplyoment/serverless/cloud_functions/go
-endly app.yaml
-```
 
 ![Cloud Function Output](/images/cloud_function_output.png)
 
 
-Reference: [Cloud function e2e automation](https://github.com/adrianwit/serverless_e2e/tree/master/cloud_function)
+References: 
+- [Cloud function e2e automation](https://github.com/adrianwit/serverless_e2e/tree/master/cloud_function)
+- [Cloud functions endly service](https://github.com/viant/endly/tree/master/system/cloud/gcp/cloudfunctions)
 
 #### Lambda
+
+
+The following workflow shows how automate lambda deployment.
+
+```bash
+cd deplyoment/serverless/lambda/go
+endly app.yaml
+```
+
+_Where:_ 
 
 - [@app.yaml](deplyoment/serverless/lambda/go/app.yaml) 
 
@@ -576,20 +630,28 @@ pipeline:
 
 ```
 
-```bash
-cd deplyoment/serverless/lambda/go
-endly app.yaml
-```
 
 
 ![Go Output](/images/lambda_output.png)
 
-Reference: [Lambda e2e automation](https://github.com/adrianwit/serverless_e2e/tree/master/lambda)
-
+References:
+ - [Lambda e2e automation](https://github.com/adrianwit/serverless_e2e/tree/master/lambda)
+-  [Lambda endly service](https://github.com/viant/endly/tree/master/system/cloud/aws/lambda)
 
 ## Application State
 
 ### Docker
+
+The following workflow shows how automate database/datastore state setup with docekr.
+
+```bash
+cd deplyoment/state/docker
+endly db
+```
+
+
+_Where:_ 
+
 
 - [@db.yaml](state/docker/db.yaml)
 ```yaml
@@ -625,18 +687,26 @@ pipeline:
         - /entrypoint.sh
 ```
 
-```bash
-cd deplyoment/state/docker
-endly db
-```
 
 ![Docker Output](/images/state_docker_output.png)
 
+Reference:
+
+- [Docker endly service](https://github.com/viant/endly/tree/master/system/docker)
 
 
 ### Database
 
 #### Mysql
+
+The following workflow shows how automate MySQL state setup
+
+```bash
+cd deplyoment/state/database/mysql
+endly setup
+```
+
+_Where_
 
 - [@setup.yaml](state/database/mysql/setup.yaml)
 ```yaml
@@ -682,18 +752,22 @@ pipeline:
     URL: mydb/data
 ```
 
-_Where_
 - mysql-mydb-root is mysql credential created by ```endly -c=mysql-mydb-root```
 - 'mydb/data' is the source folder where *.json data file are matched with database tables.
 
 
+#### PostgreSQL
+
+
+The following workflow shows how automate PostgreSQL state setup
+
+
 ```bash
-cd deplyoment/state/database/mysql
+cd deplyoment/state/database/postgresql
 endly setup
 ```
 
-#### PostgreSQL
-
+_Where_
 
 - [@setup.yaml](state/database/postgresql/setup.yaml)
 ```yaml
@@ -739,19 +813,56 @@ pipeline:
     URL: mydb/data
 ```
 
-_Where_
 - pq-mydb-root is PostgreSQL credential created by ```endly -c=pq-mydb-root```
-
-
-```bash
-cd deplyoment/state/database/postgresql
-endly setup
-```
 
 
 #### BigQuery
 
+###### Setup
+
+The following workflow shows how automate Big Query state setup
+
+```bash
+cd deplyoment/state/database/bigquery/setup
+endly setup
+```
+
+_Where_ 
+
+[@setup.yaml](state/database/bigquery/setup/setup.yaml)
+```yaml
+init:
+  bqCredentials: gcp-e2e
+
+pipeline:
+  create:
+    action: dsunit:init
+    datastore: mydb
+    config:
+      driverName: bigquery
+      credentials: $bqCredentials
+      parameters:
+        datasetId: mydb
+    scripts:
+      - URL: mydb/schema.sql
+
+  load:
+    action: dsunit:prepare
+    datastore: mydb
+    URL: mydb/data
+```
+
+
 ###### API copy
+
+
+The following workflow shows how restore BigQuery data with copy API call.
+
+```bash
+cd deplyoment/state/database/bigquery/api
+endly copy
+```
+
 
 [@copy.yaml](state/database/bigquery/api/copy.yaml)
 ```yaml
@@ -814,45 +925,20 @@ pipeline:
 
 ```
 
-```bash
-cd deplyoment/state/database/bigquery/api
-endly copy
-```
-
-###### Setup
-
-[@setup.yaml](state/database/bigquery/setup/setup.yaml)
-```yaml
-init:
-  bqCredentials: gcp-e2e
-
-pipeline:
-  create:
-    action: dsunit:init
-    datastore: mydb
-    config:
-      driverName: bigquery
-      credentials: $bqCredentials
-      parameters:
-        datasetId: mydb
-    scripts:
-      - URL: mydb/schema.sql
-
-  load:
-    action: dsunit:prepare
-    datastore: mydb
-    URL: mydb/data
-```
-
-```bash
-cd deplyoment/state/database/bigquery/setup
-endly setup
-```
-
 
 ### Datastore
 
+
 #### MongoDB
+
+The following workflow shows how automate MongoDB state setup 
+
+
+```bash
+cd deplyoment/state/datastore/mongo
+endly setup
+```
+
 
 - [@setup.yaml](state/datastore/mongo/setup.yaml)
 ```yaml
@@ -882,15 +968,18 @@ pipeline:
     URL: mydb/data
 ```
 
-```bash
-cd deplyoment/state/datastore/mongo
-endly setup
-```
 
 ![Mongo Output](/images/mongo_output.png)
 
 
 #### Aerospike
+
+The following workflow shows how automate Aerospike state setup
+
+```bash
+cd state/datastore/aerospike
+endly setup
+```
 
 
 [@setup.yaml](state/datastore/aerospike/setup.yaml)
@@ -928,11 +1017,6 @@ pipeline:
       datastore: aerodb
       URL: aerodb/data
 
-```
-
-```bash
-cd state/datastore/aerospike
-endly setup
 ```
 
 **Setup Data:**
@@ -982,17 +1066,54 @@ OK
 
 #### DynamoDb
 
+The following workflow shows how automate AWS DynamoDB state setup
 
-#### Firesore
+```bash
+cd state/datastore/dbynamodb
+endly setup authWith=myAwsSecret.json
+```
 
+
+[@setup.yaml](state/datastore/dynamo/setup.yaml)
+
+```yaml
+init:
+  '!mydbCredentials': $params.authWith
+
+pipeline:
+  setup:
+    action: dsunit:init
+    datastore: mydb
+    config:
+      driverName: dyndb
+      credentials: $mydbCredentials
+    tables:
+      - table: events
+        pkColumns:
+          - Date
+          - EventType
+        schemaURL: mydb/schema.json
+
+  load:
+    action: dsunit:prepare
+    datastore: mydb
+    URL: mydb/data
+```
+
+![Dynamodb Output](/images/dynamo_output.png)
+
+#### Firestore
 
 
 ### File Storage
+
 
 ### Message Bus
 
 #### AWS Simple Queue Service
 
 #### GCP Pub/Sub
+
+
 
 

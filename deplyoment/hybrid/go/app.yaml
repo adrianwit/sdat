@@ -23,7 +23,7 @@ pipeline:
       - export GOOS=linux
       - export CGO=0
       - go build -o app
-  build:
+  buildImage:
     action: docker:build
     path: ${buildPath}
     nocache: false
