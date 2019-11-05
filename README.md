@@ -1105,6 +1105,41 @@ pipeline:
 
 #### Firestore
 
+```bash
+cd state/datastore/firestore
+endly setup authWith=myGCPSecrets.json
+```
+
+
+[@setup.yaml](state/datastore/dynamo/setup.yaml)
+
+
+```yaml
+init:
+  '!gcpSecrets': $params.authWith
+  gcpSecretsMap: ${secrets.$gcpSecrets}
+  projectID: ${gcpSecretsMap.ProjectID}
+
+pipeline:
+
+  init:
+    action: dsunit:init
+    datastore: mydb
+    config:
+      driverName: fsc
+      credentials: $gcpSecrets
+      parameters:
+        projectID: $projectID
+
+  prepare:
+    action: dsunit:prepare
+    datastore: mydb
+    URL: mydb/data
+```
+
+![Firestore Data](/images/firestore_data.png)
+
+
 
 ### File Storage
 

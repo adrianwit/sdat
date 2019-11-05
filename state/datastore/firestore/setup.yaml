@@ -1,9 +1,10 @@
 init:
   '!gcpSecrets': $params.authWith
-  gcpSecretsMap: $secrets.${gcpSecrets}
-  projectID: $gcpSecretsMap.ProjectID
+  gcpSecretsMap: ${secrets.$gcpSecrets}
+  projectID: ${gcpSecretsMap.ProjectID}
 
 pipeline:
+
   init:
     action: dsunit:init
     datastore: mydb
