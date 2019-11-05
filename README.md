@@ -24,6 +24,7 @@
      * [MongoDB](#mongodb) 
      * [Firestore](#firestore) 
      * [Aerospike](#aerospike) 
+  - [File Storage](#file-storage)     
   - [Message Bus](#message-bus)
      * [GCP - Pub/Sub](#gcp-pubsub) 
      * [AWS - Simple Queue Service](#aws-simple-queue-service) 
@@ -1105,6 +1106,8 @@ pipeline:
 
 #### Firestore
 
+The following workflow shows how automate GCP Firestore state setup
+
 ```bash
 cd state/datastore/firestore
 endly setup authWith=myGCPSecrets.json
@@ -1140,8 +1143,87 @@ pipeline:
 ![Firestore Data](/images/firestore_data.png)
 
 
-
 ### File Storage
+
+
+### Configuration files
+
+The following show how to dynamically assemble configuration file
+
+
+```bash
+cd state/config
+endly dynamic.yaml
+
+cat /tmp/myapp/config.json
+
+```
+
+_where:_
+
+
+- [@dynamic.yaml](state/config/dynamic.yaml)
+```yaml
+init:
+  settings: $Cat('settings.json')
+  settingsMap: $AsMap('$settings')
+  config:
+    key1: val1
+    key2: val2
+    featureX: ${settingsMap.featureX}
+
+pipeline:
+  info:
+    action: print
+    message: $AsString('$config')
+
+  dynamic:
+    init:
+      cfg: $AsJSON('$config')
+    action: storage:upload
+    sourceKey: cfg
+    dest:
+      URL: /tmp/myapp/config.json
+```
+
+- [@settings.json](state/config/settings.json)
+```json
+{
+  "featureX": true
+}
+```
+
+
+
+Reference:
+
+- [Storage endly service](https://github.com/viant/endly/tree/master/system/storage)
+
+
+###  Creating test data files
+
+```bash
+cd state/data
+endly generate.yaml
+
+head -n 10 /tmp/myasset.csv
+
+```
+
+_where:_
+
+[@generate.yaml](state/data/generate.yaml)
+```yaml
+pipeline:
+  createCSV:
+    action: storage:generate
+    sizeInMb: 20
+    lineTemplate: '$i,name $i,address $i'
+    dest:
+      URL: /tmp/myasset.csv
+
+```
+
 
 
 ### Message Bus
@@ -1150,6 +1232,4 @@ pipeline:
 
 #### GCP Pub/Sub
 
-
-
-
+#### Kafka

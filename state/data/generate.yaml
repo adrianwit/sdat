@@ -1,0 +1,7 @@
+pipeline:
+  createCSV:
+    action: storage:generate
+    sizeInMb: 20
+    lineTemplate: '$i,name $i,address $i'
+    dest:
+      URL: /tmp/myasset.csv
