@@ -1217,19 +1217,148 @@ _where:_
 pipeline:
   createCSV:
     action: storage:generate
-    sizeInMb: 20
+    lines: 20
     lineTemplate: '$i,name $i,address $i'
     dest:
       URL: /tmp/myasset.csv
 
 ```
 
+Or alternatively you can generate JSON file
+[@json.yaml](state/data/json.yaml)
+```yaml
+pipeline:
+  generate:
+    action: storage:generate
+    indexVariable: id
+    lines: 100
+    index: 55
+    lineTemplate: '{"id": ${id}, "name": "dummy ${id}", "type_id": ${id % 3} } '
+    dest:
+      URL: dummy.json
+```
 
 
 ### Message Bus
 
+
+Reference: [Messaging Service](https://github.com/viant/endly/tree/master/testing/msg)
+
+
 #### AWS Simple Queue Service
+
+[@setup.yaml](state/messagebus/sqs/setup.yaml)
+```yaml
+init:
+  awsCredentials: aws-e2e
+
+pipeline:
+
+  create:
+    action: msg:setupResource
+    credentials: $awsCredentials
+    resources:
+      - URL: mye2eQueue1
+        type: queue
+        vendor: aws
+
+  setup:
+    action: msg:push
+    credentials: $awsCredentials
+    sleepTimeMs: 5000
+    dest:
+      URL: mye2eQueue1
+      type: queue
+      vendor: aws
+    messages:
+      - data: 'Test: this is my 1st message'
+      - data: 'Test: this is my 2nd message'
+```
+
+
 
 #### GCP Pub/Sub
 
+[@setup.yaml](state/messagebus/pubsub/setup.yaml)
+```yaml
+init:
+  gcpCredentials: gcp-e2e
+
+pipeline:
+
+  create:
+    action: msg:setupResource
+    resources:
+      - URL: myTopic
+        type: topic
+        vendor: gcp
+        credentials: $gcpCredentials
+
+  setup:
+    action: msg:push
+    dest:
+      URL: /projects/${msg.projectID}/topics/myTopic
+      credentials: $gcpCredentials
+    source:
+      URL: data.json
+
+```
+
+
+_where:_
+
+[@data.json](state/messagebus/pubsub/data.json)
+```json
+[
+  {
+    "data": "this is my 1st message",
+    "attributes": {
+      "attr1": "abc"
+    }
+  },
+  {
+    "data": "this is my 2nd message",
+    "attributes": {
+      "attr1": "xyz"
+    }
+  }
+]
+```
+
+
 #### Kafka
+
+
+[@setup.yaml](state/messagebus/kafka/setup.yaml)
+```yaml
+
+pipeline:
+  create:
+    sleepTimeMs: 10000
+    action: msg:setupResource
+    comments: create topic and wait for a leadership election
+    resources:
+      - URL: myTopic
+        type: topic
+        replicationFactor: 1
+        partitions: 1
+        brokers:
+          - localhost:9092
+
+
+  setup:
+    action: msg:push
+    dest:
+      url: tcp://localhost:9092/myTopic
+      vendor: kafka
+
+    messages:
+      - data: "this is my 1st message"
+        attributes:
+          key: abc
+      - data: "this is my 2nd message"
+        attributes:
+          key: xyz
+
+```
+

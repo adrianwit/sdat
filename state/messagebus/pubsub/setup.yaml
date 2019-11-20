@@ -1,0 +1,20 @@
+init:
+  gcpCredentials: gcp-e2e
+
+pipeline:
+
+  create:
+    action: msg:setupResource
+    resources:
+      - URL: myTopic
+        type: topic
+        vendor: gcp
+        credentials: $gcpCredentials
+
+  setup:
+    action: msg:push
+    dest:
+      URL: /projects/${msg.projectID}/topics/myTopic
+      credentials: $gcpCredentials
+    source:
+      URL: data.json
