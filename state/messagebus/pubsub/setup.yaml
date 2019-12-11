@@ -1,15 +1,15 @@
 init:
   gcpCredentials: gcp-e2e
 
-pipeline:
+  pipeline:
 
-  create:
-    action: msg:setupResource
-    resources:
-      - URL: myTopic
-        type: topic
-        vendor: gcp
-        credentials: $gcpCredentials
+    create:
+      action: msg:setupResource
+      resources:
+        - URL: myTopic
+          type: topic
+          vendor: gcp
+          credentials: $gcpCredentials
 
   setup:
     action: msg:push

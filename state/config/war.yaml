@@ -1,0 +1,12 @@
+init:
+  changeMe: this is my secret
+
+pipeline:
+  updateArchive:
+    action: storage:copy
+    expand: true
+    source:
+      URL: app/config.properties
+    dest:
+      URL: file:/tmp/app.war/zip://localhost/WEB-INF/classes/
+

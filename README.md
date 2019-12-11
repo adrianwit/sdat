@@ -1195,6 +1195,24 @@ pipeline:
 
 
 
+To dynamically update config.properties in the war file you can use the following:
+    
+
+```yaml
+init:
+  changeMe: this is my secret
+
+pipeline:
+  updateArchive:
+    action: storage:copy
+    expand: true
+    source:
+      URL: app/config.properties
+    dest:
+      URL: file:/tmp/app.war/zip://localhost/WEB-INF/classes/
+```
+
+
 Reference:
 
 - [Storage endly service](https://github.com/viant/endly/tree/master/system/storage)
